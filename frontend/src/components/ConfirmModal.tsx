@@ -31,35 +31,35 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   };
 
   const iconClasses = {
-    danger: 'text-red-600 bg-red-100',
-    warning: 'text-yellow-600 bg-yellow-100',
-    info: 'text-blue-600 bg-blue-100'
+    danger: 'text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400',
+    warning: 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400',
+    info: 'text-blue-600 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400'
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="flex justify-between items-center p-4 border-b">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 border border-gray-100 dark:border-gray-700">
+        <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
           <div className="flex items-center">
             <div className={`p-2 rounded-full ${iconClasses[type]} mr-3`}>
               <AlertTriangle className="w-5 h-5" />
             </div>
-            <h2 className="text-lg font-bold text-gray-800">{title}</h2>
+            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">{title}</h2>
           </div>
-          <button onClick={onCancel} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onCancel} className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
             <X className="w-5 h-5" />
           </button>
         </div>
         
         <div className="p-6">
-          <p className="text-gray-600 leading-relaxed">{message}</p>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{message}</p>
         </div>
 
-        <div className="flex justify-end space-x-3 p-4 bg-gray-50 border-t">
+        <div className="flex justify-end space-x-3 p-4 bg-gray-50 dark:bg-gray-900/50 border-t dark:border-gray-700">
           <button 
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition font-medium"
+            className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition font-medium"
           >
             {cancelText}
           </button>

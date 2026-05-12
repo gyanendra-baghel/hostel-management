@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import { Building, User, Mail, Shield, Calendar, Fingerprint } from 'lucide-react';
 
-const StudentDashboard: React.FC = () => {
+const StudentDashboard = () => {
   const { user } = useAuth();
   const [roomData, setRoomData] = useState<any>(null);
 
@@ -21,46 +21,46 @@ const StudentDashboard: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-8 border-b pb-4">
-        <h1 className="text-3xl font-bold text-gray-800">Student Dashboard</h1>
-        <p className="text-gray-500 mt-1">Welcome back, <span className="text-blue-600 font-semibold">{user?.name}</span></p>
+      <div className="mb-8 border-b dark:border-gray-800 pb-4">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Student Dashboard</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back, <span className="text-blue-600 dark:text-blue-400 font-semibold">{user?.name}</span></p>
       </div>
 
       <div className="space-y-6">
         {/* Profile Information Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="bg-blue-50 px-6 py-3 border-b border-blue-100 flex items-center">
-            <User className="w-5 h-5 mr-2 text-blue-600" />
-            <h2 className="text-lg font-bold text-blue-900">Profile Information</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div className="bg-blue-50 dark:bg-blue-900/20 px-6 py-3 border-b border-blue-100 dark:border-blue-900/30 flex items-center">
+            <User className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+            <h2 className="text-lg font-bold text-blue-900 dark:text-blue-300">Profile Information</h2>
           </div>
 
           <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Full Name</label>
-              <div className="flex items-center text-gray-800 font-medium text-lg">
-                <User className="w-4 h-4 mr-2 text-gray-300" />
+              <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Full Name</label>
+              <div className="flex items-center text-gray-800 dark:text-gray-200 font-medium text-lg">
+                <User className="w-4 h-4 mr-2 text-gray-300 dark:text-gray-600" />
                 {user?.name}
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Email Address</label>
-              <div className="flex items-center text-gray-800 font-medium">
-                <Mail className="w-4 h-4 mr-2 text-gray-300" />
+              <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Email Address</label>
+              <div className="flex items-center text-gray-800 dark:text-gray-200 font-medium">
+                <Mail className="w-4 h-4 mr-2 text-gray-300 dark:text-gray-600" />
                 {user?.email}
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Account Role</label>
-              <div className="flex items-center text-gray-800 font-medium">
-                <Shield className="w-4 h-4 mr-2 text-gray-300" />
+              <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Account Role</label>
+              <div className="flex items-center text-gray-800 dark:text-gray-200 font-medium">
+                <Shield className="w-4 h-4 mr-2 text-gray-300 dark:text-gray-600" />
                 <span className="capitalize">{user?.role}</span>
               </div>
             </div>
 
-            <div className="space-y-1 col-span-full pt-2 border-t border-gray-50">
-              <div className="flex items-center text-xs text-gray-400">
+            <div className="space-y-1 col-span-full pt-2 border-t border-gray-50 dark:border-gray-700">
+              <div className="flex items-center text-xs text-gray-400 dark:text-gray-500">
                 <Fingerprint className="w-3 h-3 mr-1" />
                 User ID: {user?._id}
               </div>
@@ -69,26 +69,26 @@ const StudentDashboard: React.FC = () => {
         </div>
 
         {/* Room Details Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="bg-green-50 px-6 py-3 border-b border-green-100 flex items-center">
-            <Building className="w-5 h-5 mr-2 text-green-600" />
-            <h2 className="text-lg font-bold text-green-900">Room Details</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div className="bg-green-50 dark:bg-green-900/20 px-6 py-3 border-b border-green-100 dark:border-green-900/30 flex items-center">
+            <Building className="w-5 h-5 mr-2 text-green-600 dark:text-green-400" />
+            <h2 className="text-lg font-bold text-green-900 dark:text-green-300">Room Details</h2>
           </div>
 
           <div className="p-6">
             {roomData ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Room Number</label>
-                  <div className="text-3xl font-bold text-blue-600">
+                  <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Room Number</label>
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {roomData.room.roomNumber}
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Room Status</label>
+                  <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Room Status</label>
                   <div className="pt-1">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${roomData.room.status === 'occupied' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${roomData.room.status === 'occupied' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
                       }`}>
                       {roomData.room.status.toUpperCase()}
                     </span>
@@ -96,18 +96,18 @@ const StudentDashboard: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Assigned Date</label>
-                  <div className="flex items-center text-gray-800 font-medium pt-1">
-                    <Calendar className="w-4 h-4 mr-2 text-gray-300" />
+                  <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Assigned Date</label>
+                  <div className="flex items-center text-gray-800 dark:text-gray-200 font-medium pt-1">
+                    <Calendar className="w-4 h-4 mr-2 text-gray-300 dark:text-gray-600" />
                     {new Date(roomData.startDate).toLocaleDateString(undefined, { dateStyle: 'long' })}
                   </div>
                 </div>
               </div>
             ) : (
               <div className="text-center py-8">
-                <Building className="w-12 h-12 text-gray-200 mx-auto mb-3" />
-                <p className="text-gray-500 italic">No room assigned yet.</p>
-                <p className="text-sm text-gray-400">Please contact the hostel administrator for your room allocation.</p>
+                <Building className="w-12 h-12 text-gray-200 dark:text-gray-700 mx-auto mb-3" />
+                <p className="text-gray-500 dark:text-gray-400 italic">No room assigned yet.</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500">Please contact the hostel administrator for your room allocation.</p>
               </div>
             )}
           </div>

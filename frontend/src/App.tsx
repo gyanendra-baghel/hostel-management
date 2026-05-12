@@ -1,6 +1,6 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -15,33 +15,35 @@ import AdminLeaveRequests from './pages/admin/LeaveRequests';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          <Route element={<ProtectedRoute role="student" />}>
-            <Route element={<DashboardLayout role="student" />}>
-              <Route path="/student" element={<StudentDashboard />} />
-              <Route path="/student/complaints" element={<Complaints />} />
-              <Route path="/student/leave" element={<LeaveRequests />} />
+            <Route element={<ProtectedRoute role="student" />}>
+              <Route element={<DashboardLayout role="student" />}>
+                <Route path="/student" element={<StudentDashboard />} />
+                <Route path="/student/complaints" element={<Complaints />} />
+                <Route path="/student/leave" element={<LeaveRequests />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route element={<ProtectedRoute role="admin" />}>
-            <Route element={<DashboardLayout role="admin" />}>
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/rooms" element={<Rooms />} />
-              <Route path="/admin/complaints" element={<AdminComplaints />} />
-              <Route path="/admin/leave" element={<AdminLeaveRequests />} />
+            <Route element={<ProtectedRoute role="admin" />}>
+              <Route element={<DashboardLayout role="admin" />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/rooms" element={<Rooms />} />
+                <Route path="/admin/complaints" element={<AdminComplaints />} />
+                <Route path="/admin/leave" element={<AdminLeaveRequests />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="/" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
