@@ -6,6 +6,7 @@ interface User {
   name: string;
   email: string;
   role: 'student' | 'admin';
+  profileImage?: string;
 }
 
 interface AuthContextType {
@@ -13,6 +14,7 @@ interface AuthContextType {
   loading: boolean;
   login: (user: User, token: string) => void;
   logout: () => void;
+  updateUser: (updatedUser: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const res = await api.get('/auth/me');
         setUser(res.data);
-      } catch (err) {
+      } catch {
         localStorage.removeItem('token');
         setUser(null);
       }
@@ -56,8 +58,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateUser = (updatedFields: Partial<User>) => {
+    setUser(prev => prev ? { ...prev, ...updatedFields } : null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

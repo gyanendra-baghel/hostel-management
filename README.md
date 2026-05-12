@@ -9,7 +9,7 @@ Build a comprehensive digital platform for hostel administrators and students to
 ## Tech Stack
 
 - **Frontend:** React.js (v19), Tailwind CSS (v4), Lucide React, Axios, React Router (v7)
-- **Backend:** Node.js, Express.js (v5), MongoDB (Mongoose), JWT Authentication
+- **Backend:** Node.js, Express.js (v5), MongoDB (Mongoose), JWT Authentication, Cloudinary (Image Uploads)
 - **Tools:** Vite, Git, npm
 
 ## Features
@@ -22,7 +22,7 @@ Build a comprehensive digital platform for hostel administrators and students to
 
 ### 2. Student Dashboard
 
-- **Profile Overview:** View personal details and account information.
+- **Profile Overview:** View personal details, account information, and upload/update profile pictures.
 - **Room Details:** Real-time view of assigned room number, status, and assignment date.
 - **Complaint System:**
   - Raise complaints (Electricity, Water, Cleaning, Internet, Other).
@@ -102,6 +102,11 @@ hotel-management/
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
    ORIGIN=http://localhost:5173
+
+   # Cloudinary Configuration
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
    ```
 4. Start the server:
    ```bash
@@ -150,9 +155,9 @@ For quick evaluation, use the following accounts:
 - [x] Dark Mode Support
 - [x] Responsive UI
 - [x] Search & Pagination
+- [x] **Profile Photo Upload:** Integration with Cloudinary for student profiles.
 
 ### Pending / Future Enhancements
 
-- [ ] **Profile Photo Upload:** Integration with Cloudinary for student profiles.
 - [ ] **Notifications:** Real-time updates for complaint resolution or leave approval.
 - [ ] **PDF Reports:** Generate room occupancy or complaint reports in PDF format.

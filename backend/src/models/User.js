@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
     enum: ['student', 'admin'],
     default: 'student',
   },
+  profileImage: {
+    type: String,
+    default: '',
+  },
 }, { timestamps: true });
 
 export default mongoose.model('User', UserSchema);

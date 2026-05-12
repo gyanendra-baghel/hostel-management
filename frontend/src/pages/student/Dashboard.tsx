@@ -1,11 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
-import { Building, User, Mail, Shield, Calendar, Fingerprint } from 'lucide-react';
+import { Building, User, Mail, Shield, Calendar, Fingerprint, Camera, Loader2 } from 'lucide-react';
+
+interface RoomData {
+  room: {
+    roomNumber: string;
+    status: string;
+  };
+  startDate: string;
+}
 
 const StudentDashboard = () => {
-  const { user } = useAuth();
-  const [roomData, setRoomData] = useState<any>(null);
+  const { user, updateUser } = useAuth();
+  const [roomData, setRoomData] = useState<RoomData | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -19,11 +29,74 @@ const StudentDashboard = () => {
     fetchRoom();
   }, []);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Frontend validation: 2MB limit
+    if (file.size > 2 * 1024 * 1024) {
+      alert('File size too large. Please select an image under 2MB.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setUploading(true);
+    try {
+      const res = await api.post('/auth/profile-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      updateUser({ profileImage: res.data.profileImage });
+    } catch (err: any) {
+      console.error('Upload failed:', err.response?.data || err.message);
+      const errorMessage = err.response?.data?.msg || 'Failed to upload image. Please try again.';
+      alert(errorMessage);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-8 border-b dark:border-gray-800 pb-4">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Student Dashboard</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back, <span className="text-blue-600 dark:text-blue-400 font-semibold">{user?.name}</span></p>
+      <div className="mb-8 border-b dark:border-gray-800 pb-4 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Student Dashboard</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back, <span className="text-blue-600 dark:text-blue-400 font-semibold">{user?.name}</span></p>
+        </div>
+
+        {/* Profile Image Section */}
+        <div className="relative group self-start md:self-auto">
+          <div className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-700 shadow-md overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+            {user?.profileImage ? (
+              <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
+            ) : (
+              <User className="w-12 h-12 text-gray-300 dark:text-gray-600" />
+            )}
+            {uploading && (
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-white animate-spin" />
+              </div>
+            )}
+          </div>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="absolute bottom-0 right-0 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors disabled:opacity-50"
+            title="Update Profile Picture"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            className="hidden"
+            accept="image/*"
+          />
+        </div>
       </div>
 
       <div className="space-y-6">

@@ -103,3 +103,24 @@ export const getMe = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+export const uploadProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: 'No image uploaded' });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    user.profileImage = req.file.path; // Cloudinary URL
+    await user.save();
+
+    res.json({ profileImage: user.profileImage });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
