@@ -127,6 +127,17 @@ hotel-management/
    npm run dev
    ```
 
+## Live Demo
+
+Available at: [https://hostel-management-frontend.vercel.app/](https://hostel-management-frontend.vercel.app/)
+
+For quick evaluation, use the following accounts:
+
+| Role        | Email                          | Password       |
+| :---------- | :----------------------------- | :------------- |
+| **Admin**   | `gyanendrabaghel633@gmail.com` | `Gyanendra12@` |
+| **Student** | `9426gsingh@gmail.com`         | `Gyanendra12@` |
+
 ## Implementation Status
 
 ### Completed

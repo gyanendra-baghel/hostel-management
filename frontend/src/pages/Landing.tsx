@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Hotel, 
-  ShieldCheck, 
-  Users, 
-  Building, 
-  MessageSquare, 
-  Calendar, 
+import {
+  Hotel,
+  ShieldCheck,
+  Users,
+  Building,
+  MessageSquare,
+  Calendar,
   ArrowRight,
   CheckCircle2,
   Moon,
   Sun
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import DashboardImage from '../assets/dashboard.png';
 
 const Landing = () => {
   const { theme, toggleTheme } = useTheme();
@@ -58,19 +59,19 @@ const Landing = () => {
               <Hotel className="w-8 h-8 text-blue-600 mr-2" />
               <span className="text-xl font-black tracking-tighter text-gray-900 dark:text-white">HOSTEL MS</span>
             </div>
-            
+
             <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
               <a href="#features" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 transition">Features</a>
               <a href="#about" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 transition">About</a>
-              <button 
+              <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               >
                 {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5 text-gray-600" />}
               </button>
               <Link to="/login" className="text-gray-900 dark:text-white font-semibold">Login</Link>
-              <Link 
-                to="/register" 
+              <Link
+                to="/register"
                 className="bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-600/20"
               >
                 Get Started
@@ -78,7 +79,7 @@ const Landing = () => {
             </div>
 
             <div className="md:hidden flex items-center space-x-4">
-               <button onClick={toggleTheme} className="p-2">
+              <button onClick={toggleTheme} className="p-2">
                 {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5 text-gray-600" />}
               </button>
               <Link to="/login" className="text-sm font-bold text-blue-600">Login</Link>
@@ -99,19 +100,19 @@ const Landing = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Efficiently & Digitally</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            A comprehensive platform for students and administrators to handle room allocations, 
+            A comprehensive platform for students and administrators to handle room allocations,
             complaints, and leave requests seamlessly.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              to="/register" 
+            <Link
+              to="/register"
               className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition flex items-center justify-center shadow-xl shadow-blue-600/30 group"
             >
               Get Started for Free
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
             </Link>
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-bold rounded-2xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition flex items-center justify-center"
             >
               Administrator Login
@@ -120,7 +121,12 @@ const Landing = () => {
 
           {/* Hero Visual */}
           <div className="mt-20 relative">
-            <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full max-w-4xl mx-auto"></div>
+            <img
+              src={DashboardImage}
+              alt="Hostel Management Illustration"
+              className="w-full max-w-4xl mx-auto rounded-lg shadow-lg border-0 overflow-hidden"
+            />
+            {/* <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full max-w-4xl mx-auto"></div>
             <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 p-2 overflow-hidden max-w-5xl mx-auto">
               <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-4">
@@ -137,7 +143,7 @@ const Landing = () => {
                    <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-xl"></div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -152,8 +158,8 @@ const Landing = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition group"
               >
                 <div className={`${feature.bg} w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition`}>
