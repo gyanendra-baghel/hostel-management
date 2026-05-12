@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -12,6 +13,7 @@ import AdminDashboard from './pages/admin/Dashboard';
 import Rooms from './pages/admin/Rooms';
 import AdminComplaints from './pages/admin/Complaints';
 import AdminLeaveRequests from './pages/admin/LeaveRequests';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
@@ -39,7 +42,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

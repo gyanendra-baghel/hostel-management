@@ -37,12 +37,12 @@ export const register = async (req, res) => {
       { expiresIn: '10h' },
       (err, token) => {
         if (err) throw err;
-        
+
         // Set cookie
         res.cookie('token', token, {
           httpOnly: true,
-          secure: NODE_ENV === 'production',
-          sameSite: 'strict',
+          secure: true,
+          sameSite: 'none',
           maxAge: 10 * 60 * 60 * 1000 // 10 hours
         });
 
