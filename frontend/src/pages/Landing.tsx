@@ -1,14 +1,11 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Hotel,
   ShieldCheck,
-  Users,
   Building,
   MessageSquare,
   Calendar,
   ArrowRight,
-  CheckCircle2,
   Moon,
   Sun
 } from 'lucide-react';
