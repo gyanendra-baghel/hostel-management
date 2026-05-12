@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET, NODE_ENV } from '../config/envs.js';
 
 export const register = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -32,7 +33,7 @@ export const register = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '10h' },
       (err, token) => {
         if (err) throw err;
@@ -40,7 +41,7 @@ export const register = async (req, res) => {
         // Set cookie
         res.cookie('token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: NODE_ENV === 'production',
           sameSite: 'strict',
           maxAge: 10 * 60 * 60 * 1000 // 10 hours
         });
@@ -77,7 +78,7 @@ export const login = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '10h' },
       (err, token) => {
         if (err) throw err;
@@ -85,7 +86,7 @@ export const login = async (req, res) => {
         // Set cookie
         res.cookie('token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: NODE_ENV === 'production',
           sameSite: 'strict',
           maxAge: 10 * 60 * 60 * 1000 // 10 hours
         });
