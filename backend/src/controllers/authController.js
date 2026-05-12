@@ -86,8 +86,8 @@ export const login = async (req, res) => {
         // Set cookie
         res.cookie('token', token, {
           httpOnly: true,
-          secure: NODE_ENV === 'production',
-          sameSite: 'strict',
+          secure: true,
+          sameSite: 'none',
           maxAge: 10 * 60 * 60 * 1000 // 10 hours
         });
 
@@ -101,7 +101,11 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none'
+  });
   res.json({ msg: 'Logged out' });
 };
 
