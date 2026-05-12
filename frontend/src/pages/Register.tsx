@@ -25,7 +25,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await api.post('/auth/register', formData);
-      login(res.data.user);
+      login(res.data.user, res.data.token);
       navigate(res.data.user.role === 'admin' ? '/admin' : '/student');
     } catch (err: any) {
       setError(err.response?.data?.msg || 'Registration failed');

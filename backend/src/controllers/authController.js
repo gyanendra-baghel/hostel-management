@@ -38,15 +38,10 @@ export const register = async (req, res) => {
       (err, token) => {
         if (err) throw err;
 
-        // Set cookie
-        res.cookie('token', token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          maxAge: 10 * 60 * 60 * 1000 // 10 hours
+        res.json({
+          token,
+          user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
-
-        res.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
       }
     );
   } catch (err) {
@@ -83,15 +78,10 @@ export const login = async (req, res) => {
       (err, token) => {
         if (err) throw err;
 
-        // Set cookie
-        res.cookie('token', token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          maxAge: 10 * 60 * 60 * 1000 // 10 hours
+        res.json({
+          token,
+          user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
-
-        res.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
       }
     );
   } catch (err) {
@@ -101,11 +91,6 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie('token', {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none'
-  });
   res.json({ msg: 'Logged out' });
 };
 

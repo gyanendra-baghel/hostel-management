@@ -11,7 +11,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (user: User) => void;
+  login: (user: User, token: string) => void;
   logout: () => void;
 }
 
@@ -23,10 +23,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const loadUser = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await api.get('/auth/me');
         setUser(res.data);
       } catch (err) {
+        localStorage.removeItem('token');
         setUser(null);
       }
       setLoading(false);
@@ -34,16 +40,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadUser();
   }, []);
 
-  const login = (newUser: User) => {
+  const login = (newUser: User, token: string) => {
+    localStorage.setItem('token', token);
     setUser(newUser);
   };
 
   const logout = async () => {
     try {
       await api.post('/auth/logout');
-      setUser(null);
     } catch (err) {
       console.error('Logout failed', err);
+    } finally {
+      localStorage.removeItem('token');
+      setUser(null);
     }
   };
 
