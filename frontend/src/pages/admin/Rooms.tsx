@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axios';
-import { Plus, UserPlus, X, UserMinus, User } from 'lucide-react';
+import { Plus, UserPlus, X, UserMinus, User, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import ConfirmModal from '../../components/ConfirmModal';
 
 const Rooms = () => {
@@ -8,6 +8,11 @@ const Rooms = () => {
   const [roomNumber, setRoomNumber] = useState('');
   const [capacity, setCapacity] = useState('2');
   const [loading, setLoading] = useState(false);
+
+  // Search and Pagination state
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Modals state
   const [showAddModal, setShowAddModal] = useState(false);
@@ -22,8 +27,9 @@ const Rooms = () => {
 
   const fetchRooms = async () => {
     try {
-      const res = await api.get('/rooms');
-      setRooms(res.data);
+      const res = await api.get(`/rooms?search=${searchTerm}&page=${currentPage}&limit=10`);
+      setRooms(res.data.rooms);
+      setTotalPages(res.data.totalPages);
     } catch (err) {
       console.error(err);
     }
@@ -31,7 +37,13 @@ const Rooms = () => {
 
   useEffect(() => {
     fetchRooms();
-  }, []);
+  }, [currentPage]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    fetchRooms();
+  };
 
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,15 +97,27 @@ const Rooms = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Room Management</h1>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          Add Room
-        </button>
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <form onSubmit={handleSearch} className="relative flex-1 md:flex-none">
+            <input
+              type="text"
+              placeholder="Search room number..."
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+          </form>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md whitespace-nowrap"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Add Room
+          </button>
+        </div>
       </div>
 
       {/* Room List - Full Width */}
@@ -163,12 +187,37 @@ const Rooms = () => {
             ) : (
               <tr>
                 <td colSpan={5} className="px-6 py-10 text-center text-gray-500 italic">
-                  No rooms found. Click "Add Room" to create one.
+                  No rooms found. Try a different search or click "Add Room" to create one.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+        
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="px-6 py-4 bg-gray-50 border-t flex items-center justify-between">
+            <div className="text-sm text-gray-500">
+              Page {currentPage} of {totalPages}
+            </div>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-2 rounded border bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded border bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Add Room Modal */}

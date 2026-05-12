@@ -1,4 +1,5 @@
 import LeaveRequest from '../models/LeaveRequest.js';
+import User from '../models/User.js';
 
 // @desc    Apply for leave
 // @route   POST /api/leave
@@ -33,9 +34,44 @@ export const getMyLeaveRequests = async (req, res) => {
 // @route   GET /api/leave
 export const getAllLeaveRequests = async (req, res) => {
   try {
-    const leaves = await LeaveRequest.find().populate('user', 'name email').sort({ createdAt: -1 });
-    res.json(leaves);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const search = req.query.search || '';
+
+    let query = {};
+    if (search) {
+      const users = await User.find({
+        $or: [
+          { name: { $regex: search, $options: 'i' } },
+          { email: { $regex: search, $options: 'i' } }
+        ]
+      }).select('_id');
+      const userIds = users.map(user => user._id);
+
+      query = {
+        $or: [
+          { reason: { $regex: search, $options: 'i' } },
+          { user: { $in: userIds } }
+        ]
+      };
+    }
+
+    const total = await LeaveRequest.countDocuments(query);
+    const leaves = await LeaveRequest.find(query)
+      .populate('user', 'name email')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      leaves,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      totalLeaves: total
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ msg: 'Server Error' });
   }
 };

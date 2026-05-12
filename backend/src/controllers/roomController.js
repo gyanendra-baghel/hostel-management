@@ -6,7 +6,18 @@ import User from '../models/User.js';
 // @route   GET /api/rooms
 export const getRooms = async (req, res) => {
   try {
-    const rooms = await Room.find().lean();
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const search = req.query.search || '';
+
+    const query = {};
+    if (search) {
+      query.roomNumber = { $regex: search, $options: 'i' };
+    }
+
+    const total = await Room.countDocuments(query);
+    const rooms = await Room.find(query).skip(skip).limit(limit).lean();
 
     // For each room, find active assignments and populate user info
     const roomsWithOccupants = await Promise.all(rooms.map(async (room) => {
@@ -20,7 +31,12 @@ export const getRooms = async (req, res) => {
       return { ...room, occupants };
     }));
 
-    res.json(roomsWithOccupants);
+    res.json({
+      rooms: roomsWithOccupants,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      totalRooms: total
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server Error' });
